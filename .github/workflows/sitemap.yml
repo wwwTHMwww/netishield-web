@@ -1,0 +1,73 @@
+name: Update NetiShield Sitemap
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate sitemap
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import re
+
+          config = open("config.js", encoding="utf-8").read()
+
+          match = re.search(r'url:"([^"]+)"', config)
+
+          if match:
+              base = match.group(1).rstrip("/")
+          else:
+              base = "https://example.com"
+
+          with open("data/articles.json", encoding="utf-8") as f:
+              articles = json.load(f)
+
+          urls = [
+              base + "/",
+              base + "/articles.html"
+          ]
+
+          for article in articles:
+              urls.append(
+                  base + "/article.html?slug=" + article["slug"]
+              )
+
+          xml = '<?xml version="1.0" encoding="UTF-8"?>'
+          xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+
+          for url in urls:
+              url = url.replace("&", "&amp;")
+              xml += "<url><loc>" + url + "</loc></url>"
+
+          xml += "</urlset>"
+
+          with open("sitemap.xml", "w", encoding="utf-8") as f:
+              f.write(xml)
+          PY
+
+      - name: Commit sitemap
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add sitemap.xml
+
+          git diff --cached --quiet || (
+            git commit -m "Update sitemap"
+            git push
+          )
