@@ -1,0 +1,9 @@
+window.NETISHIELD_CONFIG={
+ owner:"YOUR_GITHUB_USERNAME",
+ repo:"YOUR_REPOSITORY",
+ branch:"main",
+ siteName:"NetiShield",
+ tagline:"آکادمی آموزشی نت شیلد",
+ description:"مرجع آموزشی NetiShield برای آموزش‌های فنی و کاربردی.",
+ url:"https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY/"
+};
