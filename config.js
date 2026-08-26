@@ -1,6 +1,6 @@
 window.NETISHIELD_CONFIG={
- owner:"YOUR_GITHUB_USERNAME",
- repo:"YOUR_REPOSITORY",
+ owner:"WWWTHMWWW",
+ repo:"netishield-web",
  branch:"main",
  siteName:"NetiShield",
  tagline:"آکادمی آموزشی نت شیلد",
